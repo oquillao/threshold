@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "threshold",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  // global_fetch_strictly_public: required to fetch OAuth Client ID Metadata Documents safely.
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "observability": { "enabled": true },
+  // Database and KV namespace are created for you on first deploy.
+  "d1_databases": [{ "binding": "DB", "database_name": "threshold","database_id": "619fdbe4-7084-49d5-947d-66d4b9535a13" }],
+  "kv_namespaces": [{ "binding": "OAUTH_KV","id": "cc84028378e043aeb9cb049b1f6d7861" }],
+  // Refresh recent days, backfill history, and decode FIT files in small steps.
+  "triggers": { "crons": ["*/10 * * * *"] },
+  // Keep settings you change in the dashboard (TIMEZONE, PLAN, ...) when a new version deploys.
+  "keep_vars": true,
+  // The Deploy to Cloudflare button asks for these when you deploy.
+  "secrets": { "required": ["GARMIN_API_KEY", "ACCESS_KEY"] }
+}
